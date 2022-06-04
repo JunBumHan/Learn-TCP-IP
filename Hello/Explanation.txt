@@ -1,0 +1,100 @@
+
+TCP 서버구현의 순서
+
+1. socket() 소켓을 생성합니다.
+2. bind() 소켓에 주소를 할당해 줍니다.
+3. listen() 연결요청 대기상태.
+4. accpet() 연결 허용
+5. read()/write() 데이터 송수신
+6. close() 연결종료
+
+1
+int socket(int domain, int type, int protocol)
+    domain : 소켓이 사용할 프로토콜 체계 정보 전달.
+    type : 소켓의 데이터 전송방식에 대한 정보 전달.
+    protocol : 두 컴퓨터간 사용되는 프로토콜 정보 전달.
+
+2
+int bind(int sockfd, struct sockaddr *myaddr, socklen_t addrlen);
+    sockfd : IP와 PORT를 할당할 소켓의 파일 디스크립터 전달.
+    myaddr : 할당하고자 하는 주소정보를 지니는 구조체의 변수의 주소 값 전달.
+    addrlen: 두 번째 인자로 전달된 구조체 변수의 길이 전달.
+
+3
+int listen(int sock, int backlog)
+    sock : 연결요청 대기상태에 두고자 하는 소켓의 파일 디스크립터 전달. ( 이 함수의 인자로 전달되 디스크립터의 소켓이 서버 소켓이 된다.)
+    backlog : 연결요청 대기 큐(Queue)의 크기정보 전달, n개가 전달되면 큐의 크기가 n이 되어 클라이언트의 요청을 n개까지 대기시킬 수 있다.
+
+4.
+int accpet(int sock, struct sockaddr *addr, socklen_t * addrlne);
+    sock : 서버 소켓의 파일 디스크립터 전달.
+    addr : 연결요청 한 클라이언트의 주소정보를 담을 변수의 주소 값 전달. ( 함수호출이 완료되면 인자로 전달된 주소의 변수에는 클라이언트의 주소정보가 채워진다.)
+    addrlen : 두 번쨰 매개변수 addr에 전달된 주소의 변수 크기를 바이트 단위로 전달. 
+
+5 - 1
+ssize_t read(int fd, void *buf, size_t nbytes);
+    fd : 데이터 수신대상을 나타내는 파일 디스크립터 전달.
+    buf : 수신한 데이터를 저장할 버퍼의 주소 값 전달.
+    nbytes : 수신할 최대 바이트 수 전달.
+
+5 - 2 
+ssize_t write(int fd, const void * buf, size_t nbytes);
+    fd : 데이터 전송대상을 나타내는 파일 디스크립터 전달.
+    buf : 전송할 데이터가 저장된 버퍼의 주소 값 전달.
+    nbytes : 전송할 데이터의 바이트 수 전달.
+
+6 
+int close(int fd);
+    fd : 닫고자 하는 파일 또는 소켓의 파일 디스크립터 전달.
+
+    
+******************************************************
+
+
+TCP 클라이언트 구현 순서
+1. socket() 소켓생성
+2. connect() 연결요청
+3. read()/wrtie() 데이터 송수신
+4. close() 연결종료
+
+2
+int connect(int sock, struct sockaddr * servaddr, socklen_t addrlen);
+    sock : 클라이언트 소켓의 파일 디스크립터 전달.
+    servaddr : 연결요청 할 서버의 주소정보를 담은 변수의 주소 값 전달.
+    addrlen : 두 번째 매개변수 servaddr에 전달된 주소의 변수 크기를 바이트 단위로 전달.
+
+    참고 : bind함수를 통해서 소켓에 IP와 PORT를 직접 할당하지 않아도 connect함수호출 시 자동으로 bind를 해준다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
